@@ -5,6 +5,7 @@ public class Brick : MonoBehaviour {
 	
 	public Sprite[] hitSprites;
 	public static int breakableCount = 0;
+	public AudioClip crack;
 	
 	private int timesHit;
 	private LevelManager levelManager;
@@ -28,6 +29,7 @@ public class Brick : MonoBehaviour {
 	}
 	
 	void OnCollisionEnter2D (Collision2D col) {
+		AudioSource.PlayClipAtPoint (crack, transform.position);
 		if (isBreakable) {
 			HandleHits();
 		}
@@ -52,8 +54,5 @@ public class Brick : MonoBehaviour {
 		}
 	}
 	
-	// TODO Remove this method once we can actually win!
-	void SimulateWin () {
-		levelManager.LoadNextLevel();
-	}
+
 }

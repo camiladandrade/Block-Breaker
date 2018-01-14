@@ -15,6 +15,7 @@ public class Ball : MonoBehaviour {
 		
 		paddleToBallVector = this.transform.position - paddle.transform.position;
 		//print (paddleToBallVector.y);
+		
 	}
 	
 	// Update is called once per frame
@@ -27,6 +28,12 @@ public class Ball : MonoBehaviour {
 				hasStarted = true;
 				this.rigidbody2D.velocity = new Vector2 (2f, 10f);
 			}
+		}
+	}
+	
+	void OnCollisionEnter2D (Collision2D col){
+		if (hasStarted){
+			audio.Play();
 		}
 	}
 }

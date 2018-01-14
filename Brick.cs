@@ -2,41 +2,58 @@ using UnityEngine;
 using System.Collections;
 
 public class Brick : MonoBehaviour {
-
-	public int maxHits;
+	
+	public Sprite[] hitSprites;
+	public static int breakableCount = 0;
+	
 	private int timesHit;
 	private LevelManager levelManager;
-	public Sprite[] hitSprites;
-
+	private bool isBreakable;
+	
 	// Use this for initialization
 	void Start () {
-		timesHit = 0;
+		isBreakable = (this.tag == "Breakable");
+		// Keep track of breakable bricks
+		if (isBreakable) {
+			breakableCount++;
+		}
 		
+		timesHit = 0;
 		levelManager = GameObject.FindObjectOfType<LevelManager>();
-	
 	}
 	
-
+	// Update is called once per frame
+	void Update () {
+		
+	}
 	
-	void OnCollisionEnter2D (Collision2D col){
-		timesHit += 1;
-		maxHits -= 1;
-		print ("times hitted: " + timesHit);
-		if (maxHits == 0){
+	void OnCollisionEnter2D (Collision2D col) {
+		if (isBreakable) {
+			HandleHits();
+		}
+	}
+	
+	void HandleHits () {
+		timesHit++;
+		int maxHits = hitSprites.Length + 1;
+		if (timesHit >= maxHits) {
+			breakableCount--;
+			levelManager.BrickDestoyed();
 			Destroy(gameObject);
-		} else{
+		} else {
 			LoadSprites();
 		}
 	}
 	
-	//TODO Remove this method
-	void SimulateWin(){
+	void LoadSprites () {
+		int spriteIndex = timesHit - 1;
+		if (hitSprites[spriteIndex]) {
+			this.GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIndex];
+		}
+	}
+	
+	// TODO Remove this method once we can actually win!
+	void SimulateWin () {
 		levelManager.LoadNextLevel();
 	}
-	
-	void LoadSprites(){
-		int spriteIndex = timesHit -1;
-		this.GetComponent<SpriteRenderer>().sprite = hitSprites[spriteIndex];
-	}
-	
 }

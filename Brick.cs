@@ -6,7 +6,7 @@ public class Brick : MonoBehaviour {
 	public Sprite[] hitSprites;
 	public static int breakableCount = 0;
 	public AudioClip crack;
-	public GameObject smoke;
+	//public GameObject smoke;
 	
 	private int timesHit;
 	private LevelManager levelManager;
@@ -43,7 +43,7 @@ public class Brick : MonoBehaviour {
 			breakableCount--;
 			//Debug.Log(breakableCount);
 			levelManager.BrickDestoyed();
-			PuffSmoke();
+			//PuffSmoke();
 			Destroy(gameObject);
 		} else {
 			LoadSprites();
